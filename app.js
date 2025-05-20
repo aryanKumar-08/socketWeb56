@@ -1,44 +1,44 @@
-// import { Server } from "socket.io";
+import { Server } from "socket.io";
 
-// const io = new Server({
-//   cors: {
-//     origin: "https://stateshere.netlify.app",
-//   },
-// });
+const io = new Server({
+  cors: {
+    origin: "https://stateshere.netlify.app",
+  },
+});
 
-// let onlineUser = [];
+let onlineUser = [];
 
-// const addUser = (userId, socketId) => {
-//   const userExits = onlineUser.find((user) => user.userId === userId);
-//   if (!userExits) {
-//     onlineUser.push({ userId, socketId });
-//   }
-// };
+const addUser = (userId, socketId) => {
+  const userExits = onlineUser.find((user) => user.userId === userId);
+  if (!userExits) {
+    onlineUser.push({ userId, socketId });
+  }
+};
 
-// const removeUser = (socketId) => {
-//   onlineUser = onlineUser.filter((user) => user.socketId !== socketId);
-// };
+const removeUser = (socketId) => {
+  onlineUser = onlineUser.filter((user) => user.socketId !== socketId);
+};
 
-// const getUser = (userId) => {
-//   return onlineUser.find((user) => user.userId === userId);
-// };
+const getUser = (userId) => {
+  return onlineUser.find((user) => user.userId === userId);
+};
 
-// io.on("connection", (socket) => {
-//   socket.on("newUser", (userId) => {
-//     addUser(userId, socket.id);
-//   });
+io.on("connection", (socket) => {
+  socket.on("newUser", (userId) => {
+    addUser(userId, socket.id);
+  });
 
-//   socket.on("sendMessage", ({ receiverId, data }) => {
-//     const receiver = getUser(receiverId);
-//     io.to(receiver.socketId).emit("getMessage", data);
-//   });
+  socket.on("sendMessage", ({ receiverId, data }) => {
+    const receiver = getUser(receiverId);
+    io.to(receiver.socketId).emit("getMessage", data);
+  });
 
-//   socket.on("disconnect", () => {
-//     removeUser(socket.id);
-//   });
-// });
+  socket.on("disconnect", () => {
+    removeUser(socket.id);
+  });
+});
 
-// io.listen("5000");
+io.listen("5000");
 
 
 
@@ -109,49 +109,49 @@
 
 
 
-import { Server } from "socket.io";
+// import { Server } from "socket.io";
 
-const io = new Server({
-  cors: {
-    origin: "https://stateshere.netlify.app", // ✅ Production frontend
-  },
-});
+// const io = new Server({
+//   cors: {
+//     origin: "https://stateshere.netlify.app", // ✅ Production frontend
+//   },
+// });
 
-let onlineUser = [];
+// let onlineUser = [];
 
-const addUser = (userId, socketId) => {
-  const userExists = onlineUser.find((user) => user.userId === userId);
-  if (!userExists) {
-    onlineUser.push({ userId, socketId });
-  }
-};
+// const addUser = (userId, socketId) => {
+//   const userExists = onlineUser.find((user) => user.userId === userId);
+//   if (!userExists) {
+//     onlineUser.push({ userId, socketId });
+//   }
+// };
 
-const removeUser = (socketId) => {
-  onlineUser = onlineUser.filter((user) => user.socketId !== socketId);
-};
+// const removeUser = (socketId) => {
+//   onlineUser = onlineUser.filter((user) => user.socketId !== socketId);
+// };
 
-const getUser = (userId) => {
-  return onlineUser.find((user) => user.userId === userId);
-};
+// const getUser = (userId) => {
+//   return onlineUser.find((user) => user.userId === userId);
+// };
 
-io.on("connection", (socket) => {
-  console.log("User connected:", socket.id);
+// io.on("connection", (socket) => {
+//   console.log("User connected:", socket.id);
 
-  socket.on("newUser", (userId) => {
-    addUser(userId, socket.id);
-  });
+//   socket.on("newUser", (userId) => {
+//     addUser(userId, socket.id);
+//   });
 
-  socket.on("sendMessage", ({ receiverId, data }) => {
-    const receiver = getUser(receiverId);
-    if (receiver) {
-      io.to(receiver.socketId).emit("getMessage", data);
-    }
-  });
+//   socket.on("sendMessage", ({ receiverId, data }) => {
+//     const receiver = getUser(receiverId);
+//     if (receiver) {
+//       io.to(receiver.socketId).emit("getMessage", data);
+//     }
+//   });
 
-  socket.on("disconnect", () => {
-    removeUser(socket.id);
-    console.log("User disconnected:", socket.id);
-  });
-});
+//   socket.on("disconnect", () => {
+//     removeUser(socket.id);
+//     console.log("User disconnected:", socket.id);
+//   });
+// });
 
-io.listen(5000);
+// io.listen(5000);
